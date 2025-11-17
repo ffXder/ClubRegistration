@@ -94,28 +94,30 @@ namespace ClubRegistration
             return retrieveStudentIDs;
         }
 
-        public bool GetMemberInfo(long studentId)
+        public bool GetMemberInfo(long StudentId)
         {
             try
             {
                 string selectQuery = "SELECT FirstName, MiddleName, LastName, Age, Gender, Program FROM ClubMembers WHERE StudentID = @StudentId";
                 sqlCommand = new SqlCommand(selectQuery, sqlConnect);
-                sqlCommand.Parameters.AddWithValue("@StudentId", studentId);
+                sqlCommand.Parameters.AddWithValue("@StudentId", StudentId);
 
                 sqlConnect.Open();
+
                 sqlReader = sqlCommand.ExecuteReader();
 
                 if (!sqlReader.Read())
                 {
-                    return false;
-                }
 
-                _FirstName = sqlReader["FirstName"].ToString();
-                _MiddleName = sqlReader["MiddleName"].ToString();
-                _LastName = sqlReader["LastName"].ToString();
-                _Age = Convert.ToInt32(sqlReader["Age"]);
-                _Gender = sqlReader["Gender"].ToString();
-                _Program = sqlReader["Program"].ToString();
+                    return false;
+                    
+                }
+                    _FirstName = sqlReader["FirstName"].ToString();
+                    _MiddleName = sqlReader["MiddleName"].ToString();
+                    _LastName = sqlReader["LastName"].ToString();
+                    _Age = Convert.ToInt32(sqlReader["Age"]);
+                    _Gender = sqlReader["Gender"].ToString();
+                    _Program = sqlReader["Program"].ToString();
 
                 return true;
             }
@@ -149,10 +151,10 @@ namespace ClubRegistration
                 sqlCommand.Parameters.Add("@Program", SqlDbType.VarChar).Value = Program;
 
                 sqlConnect.Open();
-                int rowAffected = sqlCommand.ExecuteNonQuery();
+                int rows = sqlCommand.ExecuteNonQuery();
                 sqlConnect.Close();
 
-                return rowAffected > 0;
+                return rows > 0;
 
             }
             catch (Exception ex)

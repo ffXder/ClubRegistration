@@ -1,5 +1,3 @@
-using System.Xml.Serialization;
-
 namespace ClubRegistration
 {
     public partial class FrmClubRegistration : Form

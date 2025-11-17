@@ -20,18 +20,20 @@ namespace ClubRegistration
         private int Age;
         private string FirstName, MiddleName, LastName, Gender, Program;
 
-        public FrmUpdateMember(ClubRegistrationQuery query, Action refreshAction)
+        public FrmUpdateMember(ClubRegistrationQuery query, Action refreshListAction)
         {
             InitializeComponent();
             clubRegistrationQuery = query;
-            refreshGridAction = refreshAction;
+            refreshGridAction = refreshListAction;
             DisplayComboBox();
 
         }
         private void FrmUpdateMember_Load(object sender, EventArgs e)
         {
+            cbStudentId.SelectedIndexChanged -= cbStudentId_SelectedIndexChanged; //removes event
             PopulateStudentId();
-            //cbStudentId.Enabled = true;
+            cbStudentId.Enabled = true;
+            cbStudentId.SelectedIndexChanged += cbStudentId_SelectedIndexChanged; // adds event
         }
 
         private void PopulateStudentId()
@@ -69,26 +71,17 @@ namespace ClubRegistration
 
         private void cbStudentId_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbStudentId.SelectedIndex == -1 || cbStudentId.SelectedValue == null)
+            if (cbStudentId.SelectedValue == null || cbStudentId.SelectedIndex == -1)
             {
                 ClearInputFields();
                 return;
             }
 
-            if (long.TryParse(cbStudentId.SelectedValue.ToString(), out StudentId))
-            {
-                // Populate fields with current member info
-                txtFirstName.Text = clubRegistrationQuery._FirstName;
-                txtMiddleName.Text = clubRegistrationQuery._MiddleName;
-                txtLastName.Text = clubRegistrationQuery._LastName;
-                txtAge.Text = clubRegistrationQuery._Age.ToString();
-                cbGender.Text = clubRegistrationQuery._Gender;
-                cbProgram.Text = clubRegistrationQuery._Program;
-            }
-            else
+            if (!long.TryParse(cbStudentId.SelectedValue.ToString(), out StudentId))
             {
                 MessageBox.Show("Please select a valid Student ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ClearInputFields();
+                return;
             }
 
             if (!clubRegistrationQuery.GetMemberInfo(StudentId))
@@ -98,6 +91,13 @@ namespace ClubRegistration
                 return;
             }
 
+            // Populate fields with current member info
+            txtFirstName.Text = clubRegistrationQuery._FirstName;
+            txtMiddleName.Text = clubRegistrationQuery._MiddleName;
+            txtLastName.Text = clubRegistrationQuery._LastName;
+            txtAge.Text = clubRegistrationQuery._Age.ToString();
+            cbGender.Text = clubRegistrationQuery._Gender;
+            cbProgram.Text = clubRegistrationQuery._Program;
 
         }
 

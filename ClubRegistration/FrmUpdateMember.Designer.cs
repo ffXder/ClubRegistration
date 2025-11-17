@@ -58,6 +58,7 @@
             // 
             // cbStudentId
             // 
+            cbStudentId.Enabled = false;
             cbStudentId.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbStudentId.FormattingEnabled = true;
             cbStudentId.Location = new Point(25, 32);
@@ -217,6 +218,7 @@
             Controls.Add(label2);
             Controls.Add(cbStudentId);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "FrmUpdateMember";
             Text = "FrmUpdateMember";
             Load += FrmUpdateMember_Load;
